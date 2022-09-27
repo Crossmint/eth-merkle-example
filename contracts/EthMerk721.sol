@@ -71,14 +71,20 @@ contract EthMerk721 is ERC721, Ownable {
         merkleRoot = _root;
     }
 
-    function setUri(string _uri) external onlyOwner {
+    function setUri(string calldata _uri) external onlyOwner {
         uri = _uri;
+    }
+    
+    function withdraw() public onlyOwner {
+        payable(msg.sender).transfer(address(this).balance);
     }
 
     // VIEW
 
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-        // just the same uri for all NFTs
+        // _tokenId parameter required to override the base function
+        // even though it's not used (same uri for all NFTs)
+
         return uri;
     }
 }
